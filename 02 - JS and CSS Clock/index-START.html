@@ -62,11 +62,43 @@
       background: black;
       position: absolute;
       top: 50%;
+
+      transform-origin: 100%; /* it makes the hand rotate in one of the extremes */
+      transform: rotate(90deg); /* the hands start at 12:00 */
+      transition: all 0.05s; /* the movement of the hands takes 0.5s */
+
     }
 
   </style>
 
   <script>
+
+    const hourHand = document.querySelector(".hour-hand");
+    const minuteHand = document.querySelector(".min-hand");
+    const secondHand = document.querySelector(".second-hand");
+
+    function setDate(){
+
+      // We get the time elements
+      const now = new Date();
+      const seconds = now.getSeconds();
+      const minutes = now.getMinutes();
+      const hours = now.getHours()%12;
+
+      // We convert the elements to an angle
+      const secondsDegrees = (seconds/60)*360 + 90;
+      const minutesDegrees = (minutes/60)*360 + 90;
+      const hoursDegrees = (hours/12)*360 + 90;
+
+      // We rotate the hands accordingly
+      secondHand.style.transform = "rotate(" + secondsDegrees + "deg)";
+      minuteHand.style.transform = "rotate(" + minutesDegrees + "deg)";
+      hourHand.style.transform = "rotate(" + hoursDegrees + "deg)";
+
+    }
+
+    setInterval(setDate, 1000); // one execution of setDate per second (1000ms)
+
 
 
   </script>

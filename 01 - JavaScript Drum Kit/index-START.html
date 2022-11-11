@@ -9,10 +9,12 @@
 
 
   <div class="keys">
+
     <div data-key="65" class="key">
       <kbd>A</kbd>
       <span class="sound">clap</span>
     </div>
+
     <div data-key="83" class="key">
       <kbd>S</kbd>
       <span class="sound">hihat</span>
@@ -59,6 +61,43 @@
 
 <script>
 
+  function playSound(e){
+
+    // based on the keydown event (e), we find the elements associated
+    const audio = document.querySelector('audio[data-key="' + e.keyCode + '"]');
+    const key = document.querySelector('.key[data-key="' + e.keyCode + '"]');
+    
+    // stops the function if the key pressed is not associated with any sound
+    if(!audio) return; 
+    
+    // We "rewind" the audio in case several events at the same time 
+    audio.currentTime = 0;
+
+    // We play the audio
+    audio.play();
+
+    // We highlight the key by adding a class
+    key.classList.add("playing");
+
+  }
+
+  function removeTransition(e){
+
+    // skip the event unless is transform event
+    if(e.propertyName !== "transform") return;
+
+    // We remove the class highlighting the key
+    this.classList.remove("playing");
+
+  }
+
+  // When a key is pressed we play the sound and change the key
+  window.addEventListener('keydown', playSound);
+
+  // After a key has been changed, we transition back
+  document.querySelectorAll(".key").forEach(key => key.addEventListener("transitionend", removeTransition));
+
+  
 </script>
 
 
